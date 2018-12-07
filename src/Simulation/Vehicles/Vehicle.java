@@ -1,9 +1,7 @@
 package Simulation.Vehicles;
 
 import Simulation.Interfaces.Movable;
-import Simulation.SwagPoint;
 import Simulation.Vehicles.Cars.Car;
-import javafx.geometry.Point2D;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -22,7 +20,8 @@ public abstract class Vehicle implements Movable {
     private Vehicle.Direction direction = Direction.RIGHT;
     public static ArrayList<Vehicle.Direction> directions = initDirections();
 
-    public SwagPoint point;
+    private double x = 0;
+    private double y = 250;
 
 
     public Vehicle(double enginePower, double currentSpeed, Color color, String modelName) {
@@ -30,7 +29,6 @@ public abstract class Vehicle implements Movable {
         this.currentSpeed = currentSpeed;
         this.color = color;
         this.modelName = modelName;
-        point = new SwagPoint(0, 250);
     }
 
     private static ArrayList<Direction> initDirections() {
@@ -61,16 +59,16 @@ public abstract class Vehicle implements Movable {
 
         switch (direction) {
             case LEFT:
-                point.setX(point.getX() - currentSpeed);
+                x -= getCurrentSpeed();
                 break;
             case RIGHT:
-                point.setX(point.getX() + currentSpeed);
+                x += getCurrentSpeed();
                 break;
             case FORWARD:
-                point.setY(point.getY() - currentSpeed);
+                y -= getCurrentSpeed();
                 break;
             case BACKWARD:
-                point.setY(point.getY() + currentSpeed);
+                y += getCurrentSpeed();
                 break;
             default:
                 break;
@@ -246,7 +244,7 @@ public abstract class Vehicle implements Movable {
      * @param x sets the local instance of x to its value.
      */
     public void setX(double x) {
-        point.setX(x);
+        this.x = x;
     }
 
     /**
@@ -254,7 +252,7 @@ public abstract class Vehicle implements Movable {
      * @param y sets the local instance of x to its value.
      */
     public void setY(double y) {
-        point.setY(y);
+        this.y = y;
     }
 
     /**
@@ -262,7 +260,7 @@ public abstract class Vehicle implements Movable {
      * @return the x-position of the vehicle.
      */
     public double getX() {
-        return point.getX();
+        return x;
     }
 
     /**
@@ -270,7 +268,7 @@ public abstract class Vehicle implements Movable {
      * @return the y-position of the vehicle.
      */
     public double getY() {
-        return point.getY();
+        return y;
     }
 
 }

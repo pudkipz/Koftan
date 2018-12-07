@@ -4,6 +4,7 @@ import Simulation.Vehicles.Cars.Car;
 import Simulation.Vehicles.Cars.Saab95;
 import Simulation.Vehicles.Cars.Trucks.Scania;
 import Simulation.Vehicles.Cars.Volvo240;
+import Simulation.Vehicles.Vehicle;
 import javafx.scene.Scene;
 
 import javax.swing.*;
@@ -28,9 +29,9 @@ public class CarController {
     private Timer timer = new Timer(delay, new TimerListener());
 
     // The frame that represents this instance View of the MVC pattern
-    CarView frame;
+    private CarView frame;
     // A list of cars, modify if needed
-    ArrayList<Car> cars = new ArrayList<>();
+    private ArrayList<Vehicle> cars = new ArrayList<>();
 
     //methods:
 
@@ -39,7 +40,7 @@ public class CarController {
         CarController cc = new CarController();
 
         cc.cars.add(new Volvo240(100, 0, Color.WHITE, 4));
-        cc.cars.add(new Scania(100, 0, Color.BLACK, 2));
+        cc.cars.add(new Scania(100, 0, Color.BLACK));
         cc.cars.add(new Saab95(200, 0, Color.RED, 2));
         // Start a new view and send a reference of self
         cc.frame = new CarView("CarSim 1.0", cc, cc.cars);
@@ -53,13 +54,13 @@ public class CarController {
      * */
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            for (Car car : cars) {
+            for (Vehicle car : cars) {
                 car.move();
 
                 int x = (int) Math.round(car.getX());
                 int y = (int) Math.round(car.getY());
 
-                frame.drawPanel.moveit((int)car.getX(), (int)car.getY(), car);
+                frame.drawPanel.moveit(x, y, car);
                 // repaint() calls the paintComponent method of the panel
 
             }
@@ -70,32 +71,32 @@ public class CarController {
     // Calls the gas method for each car once
     void gas(int amount) {
         double gas = ((double) amount) / 100;
-        for (Car car : cars) {
+        for (Vehicle car : cars) {
             car.gas(gas);
         }
     }
 
     void startCars() {
-        for (Car c : cars) {
+        for (Vehicle c : cars) {
             c.startEngine();
         }
     }
 
     void stopCars() {
-        for (Car c : cars) {
+        for (Vehicle c : cars) {
             c.stopEngine();
         }
     }
 
     void brakeCar(int amount) {
         double brake = ((double) amount) / 100;
-        for (Car car : cars) {
+        for (Vehicle car : cars) {
             car.brake(brake);
         }
     }
 
     void turboOn(){
-        for (Car c : cars) {
+        for (Vehicle c : cars) {
             if(c instanceof Saab95) {
                 ((Saab95) c).setTurboOn();
             }
@@ -103,7 +104,7 @@ public class CarController {
     }
 
     void turboOff(){
-        for (Car c : cars) {
+        for (Vehicle c : cars) {
             if(c instanceof Saab95) {
                 ((Saab95) c).setTurboOff();
             }
@@ -111,7 +112,7 @@ public class CarController {
     }
 
     void lowerBed(){
-        for (Car c : cars) {
+        for (Vehicle c : cars) {
             if(c instanceof Scania) {
                 ((Scania) c).lowerLoad();
             }
@@ -119,7 +120,7 @@ public class CarController {
     }
 
     void raisBed(){
-        for (Car c : cars) {
+        for (Vehicle c : cars) {
             if(c instanceof Scania) {
                 ((Scania) c).raiseLoad();
             }

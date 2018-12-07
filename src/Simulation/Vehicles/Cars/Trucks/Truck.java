@@ -1,19 +1,21 @@
 package Simulation.Vehicles.Cars.Trucks;
 
-import Simulation.Interfaces.IBed;
+import Simulation.Interfaces.Tiltable;
 import Simulation.Vehicles.Cars.Car;
+import Simulation.Vehicles.Cars.Trucks.Flak.Bed;
+import Simulation.Vehicles.Vehicle;
 
 import java.awt.*;
 
 /**
  * A type of car that has a bed.
  */
-public abstract class Truck extends Car  {
+public abstract class Truck extends Vehicle implements Tiltable {
 
-    protected IBed bed;
+    private Bed bed;
 
-    public Truck(double enginePower, double currentSpeed, Color color, String modelName, int nrDoors) {
-        super(enginePower, currentSpeed, color, modelName, nrDoors);
+    public Truck(double enginePower, double currentSpeed, Color color, String modelName) {
+        super(enginePower, currentSpeed, color, modelName);
 
 
     }
@@ -52,17 +54,18 @@ public abstract class Truck extends Car  {
      * sets the instance of the bed.
      * @param bed sets local instance of bed to its value.
      */
-    public void setBed(IBed bed) {
+    public void setBed(Bed bed) {
         this.bed = bed;
     }
 
-    public IBed getBed(){
+    public Bed getBed(){
         return bed;
     }
 
     /**
      * @return the current degree of the tilt of the load
      */
+    @Override
     public double getDegrees() {
         return bed.getDegrees();
     }

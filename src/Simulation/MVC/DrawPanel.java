@@ -1,8 +1,6 @@
 package Simulation.MVC;
 
-import Simulation.SwagPoint;
-import Simulation.Vehicles.Cars.Car;
-import javafx.geometry.Point2D;
+import Simulation.Vehicles.Vehicle;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -20,32 +18,30 @@ import javax.swing.*;
 public class DrawPanel extends JPanel{
 
     // Just a single image, TODO: Generalize
-    BufferedImage volvoImage;
-    BufferedImage saabImage;
-    BufferedImage scaniaImage;
+    private BufferedImage volvoImage;
+    private BufferedImage saabImage;
+    private BufferedImage scaniaImage;
 
     // To keep track of a singel cars position
-    List<SwagPoint> points = new ArrayList();
-    Map<SwagPoint, Car> pointBinder;
-
-    private Car currentCar;
+    private List<Point> points = new ArrayList();
+    private Map<Point, Vehicle> pointBinder;
 
     // TODO: Make this genereal for all cars
-    void moveit(int x, int y, Car car){
-        currentCar = car;
+    void moveit(int x, int y, Vehicle vehicle){
+        Vehicle currentVehicle = vehicle;
         if(x > 800-100){
-            car.stopEngine();
-            car.turnLeft();
-            car.turnLeft();
-            car.startEngine();
-            car.setX(800-100);
+            vehicle.stopEngine();
+            vehicle.turnLeft();
+            vehicle.turnLeft();
+            vehicle.startEngine();
+            vehicle.setX(800-100);
         }
         if(x < 0){
-            car.stopEngine();
-            car.turnLeft();
-            car.turnLeft();
-            car.startEngine();
-            car.setX(0);
+            vehicle.stopEngine();
+            vehicle.turnLeft();
+            vehicle.turnLeft();
+            vehicle.startEngine();
+            vehicle.setX(0);
         }
 
 
@@ -75,33 +71,34 @@ public class DrawPanel extends JPanel{
 
     }
 
-    public void initMap(List<Car> cars){
+    void initMap(List<Vehicle> vehicles){
         pointBinder = new HashMap<>();
-        for (int i = 0; i < cars.size(); i++) {
+        for (int i = 0; i < vehicles.size(); i++) {
 
-            cars.get(i).setY(50 + 100*i);
-            points.add(cars.get(i).point);
-            pointBinder.put(cars.get(i).point, cars.get(i));
+            vehicles.get(i).setY(50 + 100*i);
+            Point p = new Point((int) vehicles.get(i).getY(), (int) vehicles.get(i).getY());
+            points.add(p);
+            pointBinder.put(p, vehicles.get(i));
         }
     }
 
 
-    private BufferedImage getCarImage(Car car) throws IOException {
+    private BufferedImage getCarImage(Vehicle vehicle) throws IOException {
 
-        BufferedImage carImage = null;
+        BufferedImage vehicleImage = null;
 
-        switch (car.getModelName()){
+        switch (vehicle.getModelName()){
 
             case ("Volvo240"):
-                carImage = ImageIO.read(new File("src\\Simulation\\Assets\\Volvo240.jpg"));
+                vehicleImage = ImageIO.read(new File("src\\Simulation\\Assets\\Volvo240.jpg"));
                 break;
 
             case ("Saab95"):
-                carImage = ImageIO.read(new File("src\\Simulation\\Assets\\Saab95.jpg"));
+                vehicleImage = ImageIO.read(new File("src\\Simulation\\Assets\\Saab95.jpg"));
                 break;
 
             case ("Scania"):
-                carImage = ImageIO.read(new File("src\\Simulation\\Assets\\Scania.jpg"));
+                vehicleImage = ImageIO.read(new File("src\\Simulation\\Assets\\Scania.jpg"));
                 break;
 
                 default:
@@ -109,7 +106,7 @@ public class DrawPanel extends JPanel{
 
         }
 
-        return carImage;
+        return vehicleImage;
     }
 
     // This method is called each time the panel updates/refreshes/repaints itself
@@ -119,9 +116,9 @@ public class DrawPanel extends JPanel{
         super.paintComponent(g);
         for (int i = 0; i < points.size(); i++) {
 
-            Car c = pointBinder.get(points.get(i));
+            Vehicle v = pointBinder.get(points.get(i));
             try {
-                g.drawImage(getCarImage(c), (int) c.getX(), (int) c.getY(), null); // see javadoc for more info on the parameters
+                g.drawImage(getCarImage(v), (int) v.getX(), (int) v.getY(), null); // see javadoc for more info on the parameters
             } catch (IOException e) {
                 e.printStackTrace();
             }

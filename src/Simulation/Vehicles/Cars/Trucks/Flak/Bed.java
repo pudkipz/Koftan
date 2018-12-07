@@ -1,21 +1,17 @@
 package Simulation.Vehicles.Cars.Trucks.Flak;
 
-import Simulation.Interfaces.IBed;
-import Simulation.SwagPoint;
-import javafx.geometry.Point2D;
-
-import java.awt.*;
+import Simulation.Interfaces.Tiltable;
 
 /**
  * A platform which can raise and lower its load. (Flak)
  */
-public class Bed implements IBed {
+public class Bed {
 
+    private Tiltable owner;
     private double degrees = 0;
-    private SwagPoint point;
 
-    public Bed(SwagPoint point) {
-        this.point = point;
+    public Bed(Tiltable owner) {
+        this.owner = owner;
     }
 
     /**
@@ -25,41 +21,29 @@ public class Bed implements IBed {
         return degrees;
     }
 
-
-    @Override
-    public double getX() {
-        return point.getX();
-    }
-
-    @Override
-    public double getY() {
-        return point.getY();
-    }
-
-
     /**
      * Raise the load
      */
-    public void raiseLoad(double currentSpeed) {
-        if(currentSpeed == 0) {
+    public void raiseLoad(int amount) {
+        if(owner.getCurrentSpeed() == 0) {
             System.out.println("LoadRaised");
-            if (degrees + 10 >= 70)
+            if (degrees + amount >= 70)
                 degrees = 70;
             else
-                degrees += 10;
+                degrees += amount;
         }
     }
 
     /**
      * Lower the load
      */
-    public void lowerLoad(double currentSpeed) {
-        if (currentSpeed == 0) {
+    public void lowerLoad(int amount) {
+        if (owner.getCurrentSpeed() == 0) {
             System.out.println("LoadLowered");
-            if (degrees - 10 <= 0)
+            if (degrees - amount <= 0)
                 degrees = 0;
             else
-                degrees -= 10;
+                degrees -= amount;
 
         }
     }

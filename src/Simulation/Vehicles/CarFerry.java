@@ -1,16 +1,16 @@
 package Simulation.Vehicles;
 
-import Simulation.Interfaces.IBed;
+import Simulation.Interfaces.Loadable;
+import Simulation.Interfaces.Storeable;
 import Simulation.Vehicles.Cars.Trucks.Flak.Trailer;
-import Simulation.Vehicles.Cars.Car;
 
 import java.awt.*;
 
 /**
  * A Ferry which can hold cars.
  */
-public class CarFerry extends Vehicle implements IBed {
-    private Trailer trailer = new Trailer(point);
+public class CarFerry extends Vehicle implements Loadable {
+    private Trailer trailer = new Trailer(this);
 
 
     public CarFerry(double enginePower, double currentSpeed, Color color, String modelName) {
@@ -20,10 +20,11 @@ public class CarFerry extends Vehicle implements IBed {
     /**
      * loads a car to the ferry
      *
-     * @param c the car to be loaded
+     * @param s the car to be loaded
      */
-    public void load(Car c) {
-        trailer.load(c);
+    @Override
+    public void load(Storeable s) {
+        trailer.load(s);
     }
 
     /**
@@ -49,21 +50,22 @@ public class CarFerry extends Vehicle implements IBed {
      * lowers the load
      */
     public void lowerLoad() {
-        trailer.lowerLoad(getCurrentSpeed());
+        trailer.lowerLoad(70);
     }
 
     /**
      * raise the load
      */
     public void raiseLoad() {
-        trailer.raiseLoad(getCurrentSpeed());
+        trailer.raiseLoad(70);
     }
 
 
     /**
      * @return the unloaded car
      */
-    public Car unLoad() {
+    @Override
+    public Storeable unLoad() {
         return trailer.unLoad(trailer.getFirstCar());
     }
 
@@ -82,15 +84,5 @@ public class CarFerry extends Vehicle implements IBed {
      */
     public Trailer getTrailer() {
         return trailer;
-    }
-
-    @Override
-    public void raiseLoad(double currentSpeed) {
-
-    }
-
-    @Override
-    public void lowerLoad(double currentSpeed) {
-
     }
 }

@@ -1,6 +1,5 @@
 package Simulation.Vehicles.Cars.Trucks;
 
-import Simulation.Interfaces.IBed;
 import Simulation.Interfaces.Storeable;
 import Simulation.Vehicles.Cars.Trucks.Flak.Bed;
 
@@ -12,9 +11,11 @@ import java.awt.*;
 public class Scania extends Truck implements Storeable {
 
 
-    public Scania(double enginePower, double currentSpeed, Color color, int nrDoors) {
-        super(enginePower, currentSpeed, color,"Scania", nrDoors);
-        bed = new Bed(point);
+    private Bed bed = new Bed(this);
+
+
+    public Scania(double enginePower, double currentSpeed, Color color) {
+        super(enginePower, currentSpeed, color,"Scania");
         setBed(bed);
     }
 
@@ -23,7 +24,7 @@ public class Scania extends Truck implements Storeable {
      */
     public void raiseLoad() {
 
-        bed.raiseLoad(getCurrentSpeed()); //TODO sätt till 1
+        bed.raiseLoad(10); //TODO sätt till 1
 
     }
 
@@ -31,7 +32,7 @@ public class Scania extends Truck implements Storeable {
      * @return lower the load
      */
     public void lowerLoad() {
-        bed.lowerLoad(getCurrentSpeed());
+        bed.lowerLoad(10);
     }
 
     /**
@@ -47,7 +48,7 @@ public class Scania extends Truck implements Storeable {
      *
      * @return the bed of the Scania
      */
-    public IBed getBed() {
+    public Bed getBed() {
         return bed;
     }
 
